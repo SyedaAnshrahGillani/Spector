@@ -2,7 +2,7 @@
 
 **Crafted with ❤️ by Syeda Anshrah Gillani** — [github.com/SyedaAnshrahGillani/spector](https://github.com/SyedaAnshrahGillani/spector)
 
-![Spector Logo](https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/72x72/1f4c3.png)
+![Spector Logo](src/images/hero.png)
 
 🎬 **Spector in action — instant data exploration**
 
