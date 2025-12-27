@@ -1,24 +1,81 @@
 # Spector — Instant Private Data Viewer
 
-**Crafted with ❤️ by Syeda Anshrah Gillani** — [github.com/SyedaAnshrahGillani/spector](https://github.com/SyedaAnshrahGillani/spector)
+**Crafted with ❤️ by Syeda Anshrah Gillani**
+🔗 [https://github.com/SyedaAnshrahGillani/spector](https://github.com/SyedaAnshrahGillani/spector)
 
-![Spector Logo](src/images/hero.png)
+![Spector Hero](src/images/hero.png)
 
-🎬 **Spector in action — instant data exploration**
+🎬 **Spector in action — upload, inspect, explore**
 
 ![Upload Data Demo](src/videos/upload_data.gif)
 
+---
 
+## Why Spector Exists
 
-Spector is a **lightweight, offline JSON / JSONL viewer** designed for developers, data scientists, and AI practitioners. Drag & drop files or select from the `data/` folder to inspect your data instantly — all in the browser. No uploads, no telemetry, 100% client-side.
+Working with AI and LLM systems means constantly inspecting **structured datasets** — prompts, responses, evaluations, logs, and experiments.
 
-It’s perfect for exploring **LLM datasets**, evaluation records, instruction-response pairs, prompts, and structured JSON data.
+Platforms like **Hugging Face Datasets** provide excellent dataset viewers. However, visual exploration of **private datasets** requires a paid subscription, which is often not feasible for:
+
+* proprietary or client-owned data
+* sensitive research datasets
+* early-stage experiments
+* independent developers and researchers
+
+At the same time, local workflows fall short:
+
+* text editors are too raw
+* spreadsheets flatten structure
+* custom scripts cost time
+* heavy tools interrupt focus
+
+**Spector was built to bridge this gap** — a simple, offline, zero-cost way to visually explore private JSON and JSONL data, directly on your own machine.
+
+---
+
+## What Spector Is
+
+Spector is a **lightweight, offline JSON / JSONL viewer** for developers, AI engineers, and researchers.
+
+It runs entirely in the browser using **HTML, CSS, and vanilla JavaScript**, with no backend and no dependencies.
+
+> **From raw data to clarity — instantly and privately.**
+
+---
+
+## Key Features
+
+* 📂 Drag & drop `.json` / `.jsonl` files
+* 📁 Auto-detect files from a local `data/` folder
+* 📊 Paginated, sortable table view
+* 🧾 Expandable JSON drawer for nested objects
+* 🌗 Dark / light theme toggle
+* 🧠 Designed for **LLM datasets and evaluations**
+* 🔒 100% client-side (no uploads, no tracking)
+* 🧩 Friendly empty state with guidance
+
+---
+
+## Tech Stack
+
+| Layer   | Technology         |
+| ------- | ------------------ |
+| Markup  | HTML5              |
+| Styling | CSS                |
+| Logic   | Vanilla JavaScript |
+| Runtime | Browser            |
+
+---
+
+## Example Workflow
+
+🎬 **Load example datasets and inspect records**
+
+![View Examples Demo](src/videos/view_examples.gif)
 
 ---
 
 ## Quick Start — Run Locally
-
-> Open `index.html` and let Spector read files in `data/`. A simple static server allows directory listing.
 
 ### 1. Clone the repository
 
@@ -27,9 +84,9 @@ git clone https://github.com/SyedaAnshrahGillani/spector.git
 cd spector
 ```
 
-### 2. Add your data files
+### 2. Add your data
 
-Create a `data/` folder (if it doesn’t exist) and put your `.json` or `.jsonl` files directly inside:
+Place `.json` or `.jsonl` files **directly** inside the `data/` folder:
 
 ```
 spector/
@@ -41,124 +98,92 @@ spector/
  │   └─ vibe_queries.jsonl
 ```
 
-🎬 **Spector in action — example data loading**
+---
 
-![Upload Data Demo](src/videos/upload_data.gif)
+## Included Dataset Examples
 
-**Example `data/llm_qa.json`** (array of Q&A records):
+### `data/llm_qa.json`
 
 ```json
 [
-  {"id":1,"question":"What is the capital of France?","answer":"Paris","category":"geography","difficulty":"easy"},
-  {"id":2,"question":"Explain recursion in programming.","answer":"Recursion is when a function calls itself to solve smaller subproblems.","category":"programming","difficulty":"medium"}
+  {"id":1,"question":"What is the capital of France?","answer":"Paris","difficulty":"easy"},
+  {"id":2,"question":"Explain recursion.","answer":"A function calling itself.","difficulty":"medium"}
 ]
 ```
 
-**Example `data/llm_eval.jsonl`** (newline-delimited JSON):
+### `data/llm_eval.jsonl`
 
 ```jsonl
-{"id":101,"instruction":"Translate: 'Hello, how are you?'", "response":"Bonjour, comment ça va ?", "category":"translation","quality":"high"}
-{"id":102,"instruction":"Classify sentiment: 'I love this product!'", "response":"Positive", "category":"sentiment-analysis","quality":"high"}
+{"instruction":"Translate 'Hello'","response":"Bonjour","quality":"high"}
+{"instruction":"Classify sentiment","response":"Positive","quality":"high"}
 ```
 
-**Example `data/llm_prompts.json`** (array of prompts):
-
-```json
-[
-  {"id":1,"prompt":"Write a 4-line poem about the sea.","type":"creative-writing","difficulty":"medium"},
-  {"id":2,"prompt":"Explain the difference between supervised and unsupervised learning.","type":"machine-learning","difficulty":"medium"}
-]
-```
-
-**Example `data/vibe_queries.jsonl`** (real-world task prompts):
+### `data/vibe_queries.jsonl`
 
 ```jsonl
-{"idx": 1, "query": "Design and build a portfolio site for a top‑tier design agency...", "domain": "web", "difficulty": "easy"}
-{"idx": 2, "query": "Reimagine our boutique hotels’ booking experience...", "domain": "web", "difficulty": "easy"}
-{"idx": 3, "query": "Create a SvelteKit server health dashboard...", "domain": "web", "difficulty": "easy"}
+{"idx":1,"query":"Design a premium portfolio site...","domain":"web","difficulty":"easy"}
+{"idx":2,"query":"Reimagine a hotel booking experience...","domain":"web","difficulty":"easy"}
 ```
 
 ---
 
-### 3. Serve the folder with Python
+## Core Use Cases
 
-```bash
-python3 -m http.server 8000
-```
+### AI & ML Engineers
 
-* Opens a static server on port **8000**.
-* Visit `http://localhost:8000` in your browser.
-* Stop the server: `Ctrl + C`.
+* Inspect private LLM datasets locally
+* Debug prompt–response pairs
+* Review evaluation outputs before training
 
-**Windows note:**
+### Researchers
 
-```bash
-py -3 -m http.server 8000
-```
+* Validate dataset quality and structure
+* Explore experimental data safely
 
-**Optional LAN access (be cautious):**
+### Developers
 
-```bash
-python3 -m http.server 8000 --bind 0.0.0.0
-```
+* Visualize API responses
+* Inspect deeply nested JSON structures
 
 ---
 
-### 4. Use Spector
-
-* Open `http://localhost:8000`.
-* Use the **file picker** to select a file from `data/`.
-* Or **drag & drop** any `.json` / `.jsonl` file anywhere on the page.
-* Click a row to open the **formatted JSON drawer**.
-* Sort, paginate, and explore arrays or objects instantly.
-
----
-
-## Empty State / Placeholder
-
-If `data/` is empty, Spector displays a friendly placeholder:
+## Empty State Experience
 
 ![Empty State](src/images/empty-state.png)
 
-> Drag & drop your first JSON or JSONL file to start exploring data instantly.
+> Drag & drop a JSON or JSONL file to begin exploring.
 
 ---
 
 ## Demo Videos
 
-See Spector in action:
-
-| Action                      | Video                                                                                            |
-| --------------------------- | ------------------------------------------------------------------------------------------------ |
-| Upload data & explore       | <video width="300" controls><source src="src/videos/upload_data.mp4" type="video/mp4"></video>   |
-| View examples & JSON drawer | <video width="300" controls><source src="src/videos/view_examples.mp4" type="video/mp4"></video> |
+| Action                      | Link                                              |
+| --------------------------- | ------------------------------------------------- |
+| Upload data & explore       | [upload_data.mp4](src/videos/upload_data.mp4)     |
+| View examples & JSON drawer | [view_examples.mp4](src/videos/view_examples.mp4) |
 
 ---
 
-## Why use a local server?
+## Why a Local Server Is Required
 
-Modern browsers block certain operations (like fetching directory listings) when opening `index.html` via `file://`. Serving over HTTP allows:
+Browsers restrict file access when opening `index.html` directly.
 
-* Dynamic fetching of files in `data/`
-* Populating the picker automatically
-* Smooth client-side JSON/JSONL rendering
+Run a local server:
 
----
+```bash
+python3 -m http.server 8000
+```
 
-## Handling Large Datasets
-
-* Spector **paginates rows** in the browser.
-* For very large files (>50MB), consider **sampling** or **splitting**.
-* Click any row to inspect **nested JSON** fully in the drawer.
+Then open: `http://localhost:8000`
 
 ---
 
 ## Hosting Notes
 
-* **GitHub Pages**: directory listing not available → use `manifest.json` or static `data/index.html`.
-* **Other static hosts**: same, directory listing may fail → manifest recommended.
+* **GitHub Pages** does not support directory listing
+  Use a `data/manifest.json` or a static `data/index.html`
 
-**Example manifest:**
+Example manifest:
 
 ```json
 {
@@ -173,37 +198,38 @@ Modern browsers block certain operations (like fetching directory listings) when
 
 ---
 
-## Troubleshooting
+## Releases
 
-* **Picker shows `(no files found)`** → confirm `data/` exists and contains files.
-* **404 when loading a file** → check file name casing.
-* **Files don’t appear on GitHub Pages** → use manifest or static index.
-
----
-
-## Alternative Server (Node.js)
-
-```bash
-npm install -g serve
-serve -p 8000
-# or
-npx serve -p 8000
-```
+| Version    | Date       | Highlights                                                                                                                       |
+| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **v1.0.0** | 2025-01-27 | Initial release — offline JSON/JSONL viewer, LLM datasets, drag & drop, pagination, JSON drawer, empty state, full documentation |
 
 ---
 
-## Contribution & Contact
+## A Personal Note
 
-* Fork → branch → commit → PR.
-* Open issues for bugs or feature requests.
-* Ideas: keyboard navigation, CSV support, manifest UI improvements, filtering.
+Spector is a **solo, problem-driven project**.
 
-**Thank you for exploring Spector — your local JSON/JSONL companion by Syeda Anshrah Gillani!**
+It was created while working with private datasets where existing viewers required paid plans or data uploads — neither of which aligned with real-world constraints.
+
+This project is shared freely to help fellow developers and AI engineers visualize their data without barriers.
+
+---
+
+## Contributing
+
+Contributions are welcome:
+
+* Fork → branch → PR
+* Feature ideas: filtering, CSV support, keyboard navigation
 
 ---
 
 ## License
 
-MIT — see `LICENSE`.
+**MIT License** — free to use, modify, and share.
 
 ---
+
+⭐ If Spector helps you, consider starring the repository — it supports independent open-source work.
+
