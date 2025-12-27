@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Spector – Instant Private Data Viewer</title>
+  <meta name="description" content="Drag-and-drop JSON / JSONL viewer by Syeda Anshrah Gillani. 100% offline, no uploads, no limits."/>
+  <meta property="og:title" content="Spector – Instant Private Data Viewer"/>
+  <meta property="og:description" content="Drag-and-drop JSON / JSONL viewer by Syeda Anshrah Gillani. 100% offline, no uploads, no limits."/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary"/>
+  <!-- small favicon (document) -->
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/72x72/1f4c3.png"/>
+
+  <!-- GitHub markdown styles for drawer -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css">
+
+  <style>
+    :root{
+      --bg:#f7f7f7;
+      --fg:#222;
+      --border:#ddd;
+      --header:#f6f6f6;
+      --hover:#eef;
+      --accent:#007acc;
+    }
+    [data-theme="dark"]{
+      --bg:#0f1113;
+      --fg:#e3e3e3;
+      --border:#2b2b2b;
+      --header:#141518;
+      --hover:#1a1c2a;
+      --accent:#4dabf7;
+    }
+
+    html,body{height:100%;margin:0}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+      display:flex;
+      flex-direction:column;
+      transition:background .18s,color .18s;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Top controls */
+    header{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      padding:0.75rem 1rem;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,0.01));
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      font-weight:700;
+      font-size:1.05rem;
+    }
+    .brand svg{width:28px;height:28px;display:block}
+    .controls{margin-left:auto;display:flex;align-items:center;gap:.6rem}
+    .controls > *{background:none;border:1px solid var(--border);padding:.3rem .6rem;border-radius:6px;color:var(--fg);font-size:0.95rem}
+    .controls a{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--fg)}
+    .github-icon{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .5rem;border-radius:6px}
+    #themeToggle{cursor:pointer;border-radius:6px;padding:.3rem .45rem}
+
+    /* Main layout */
+    #main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    #panelTop{padding:0.75rem 1rem;display:flex;align-items:center;gap:.6rem}
+    #picker{min-width:220px}
+    #totalInfo{font-size:.9rem;opacity:.85;margin-left:.5rem}
+
+    /* Drop zone / empty state / table area */
+    #container{flex:1;display:flex;overflow:hidden;padding:1rem;gap:1rem}
+    #left{flex:1;display:flex;flex-direction:column;min-width:0}
+    #dropZone{
+      border:2px dashed var(--border);
+      border-radius:8px;
+      padding:1.6rem;
+      text-align:center;
+      margin-bottom:1rem;
+      user-select:none;
+      transition:background .15s, border-color .15s;
+    }
+    #dropZone.active{border-color:var(--accent);background:var(--hover)}
+    #dropZone p{margin:.2rem 0;font-size:1rem}
+    #dropZone small{opacity:.7;font-size:.85rem;display:block;margin-top:.5rem}
+
+    #emptyState{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:.75rem;
+      color:var(--fg);
+      opacity:.85;
+    }
+    #emptyState img{width:110px;height:110px;opacity:.5}
+    #emptyState p{max-width:520px;text-align:center;line-height:1.4}
+
+    /* Table wrapper */
+    #tableWrap{flex:1;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:0;margin:0;background:var(--bg)}
+    table{width:100%;border-collapse:collapse;font-size:.92rem}
+    thead th{position:sticky;top:0;background:var(--header);padding:10px;border-bottom:1px solid var(--border);text-align:left}
+    tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    tbody tr:hover td{background:var(--hover);white-space:normal;z-index:2;position:relative}
+
+    /* pagination */
+    #pages{padding:.6rem 0;text-align:center;border-top:1px solid var(--border)}
+    .page-btn{margin:.18rem;padding:.32rem .6rem;border-radius:6px;border:1px solid var(--border);background:transparent}
+    .page-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+    /* drawer (json viewer) */
+    #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;z-index:40}
+    #drawer{
+      position:fixed;
+      right:0;top:0;bottom:0;
+      width:50%;
+      max-width:720px;
+      background:var(--bg);
+      border-left:1px solid var(--border);
+      padding:1rem;
+      overflow:auto;
+      display:none;
+      z-index:41;
+    }
+    /* footer */
+    footer{padding:.6rem 1rem;text-align:center;font-size:.9rem;color:var(--fg);opacity:.8;border-top:1px solid var(--border)}
+
+    /* small screens */
+    @media(max-width:900px){
+      #drawer{width:100%}
+      #container{padding:0.6rem}
+      #panelTop{flex-wrap:wrap;gap:.5rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand" title="Spector by SyedaAnshrahGillani">
+      <!-- meaningful logo (document + eye) -->
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <rect x="3" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"></rect>
+        <path d="M7 8h7M7 12h8M7 16h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="19" cy="7" r="3" stroke="currentColor" stroke-width="1.4" fill="none"/>
+        <path d="M17.1 6.1a2 2 0 002.8 2.8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      Spector
+      <span style="font-weight:500;font-size:0.9rem;opacity:.85">— Instant Private Data Viewer</span>
+    </div>
+
+    <div class="controls">
+      <a class="github-icon" href="https://github.com/SyedaAnshrahGillani/spector" target="_blank" rel="noopener" title="Open Spector repo on GitHub">
+        <!-- small github icon -->
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden>
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.64 7.64 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span style="font-size:.9rem">GitHub</span>
+      </a>
+
+      <!-- theme toggle (SVG) -->
+      <button id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
+        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Top panel -->
+  <div id="panelTop">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-left:1rem;">
+      <label for="picker" style="font-size:.95rem">File:</label>
+      <select id="picker" aria-label="Choose data file">
+        <option value="">(loading...)</option>
+      </select>
+      <button id="load">Load</button>
+      <span id="totalInfo" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div id="main">
+    <div id="container">
+      <div id="left">
+        <!-- Drop zone (always available for user to drop file) -->
+        <div id="dropZone" aria-label="Drop JSON files here" role="region">
+          <p><strong>Drag & drop</strong> a <code>.json</code> or <code>.jsonl</code> file anywhere on this page to view it instantly.</p>
+          <small>Or choose a file from the <code>data/</code> folder using the picker above.</small>
+        </div>
+
+        <!-- Empty state (shown when no files found in data/) -->
+        <div id="emptyState" style="display:none;">
+          <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14/assets/72x72/1f4c3.png" alt="No data icon" aria-hidden/>
+          <p><strong>No data files found.</strong><br/>Please add one or more <code>.json</code> / <code>.jsonl</code> files to the <code>data/</code> folder in this repo (or drop a file here) to get started.</p>
+          <p style="font-size:.9rem;opacity:.85">Tip: For JSONL files, each line should be a single JSON object.</p>
+        </div>
+
+        <!-- Table (hidden when empty) -->
+        <div id="tableWrap" style="display:none;">
+          <table role="table" aria-label="Data table">
+            <thead id="head"></thead>
+            <tbody id="body"></tbody>
+          </table>
+        </div>
+
+        <div id="pages" style="display:none;"></div>
+      </div>
+
+      <!-- Right column could show file list / details in future (left empty for now) -->
+      <div style="width:1px"></div>
+    </div>
+  </div>
+
+  <!-- Drawer for JSON details -->
+  <div id="overlay"></div>
+  <aside id="drawer" class="markdown-body" aria-hidden="true"></aside>
+
+  <footer>
+    Crafted with ❤️ by <strong>Syeda Anshrah Gillani</strong> — <a href="https://github.com/SyedaAnshrahGillani/spector" target="_blank" rel="noopener">github.com/SyedaAnshrahGillani/spector</a>
+  </footer>
+
+<script type="module">
+/* ===========================
+   Spector — full integrated JS
+   =========================== */
+
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
+/* ---------- tiny helpers ---------- */
+const $ = s => document.querySelector(s);
+const DATA_DIR = 'data'; // folder with JSON / JSONL files
+const picker = $('#picker');
+const loadBtn = $('#load');
+const totalInfo = $('#totalInfo');
+const dropZone = $('#dropZone');
+const emptyState = $('#emptyState');
+const tableWrap = $('#tableWrap');
+const headEl = $('#head');
+const bodyEl = $('#body');
+const pagesEl = $('#pages');
+const drawer = $('#drawer');
+const overlay = $('#overlay');
+const themeBtn = $('#themeToggle');
+const themeIcon = $('#themeIcon');
+
+let DS = [], KEYS = [], page = 0, SZ = 50, asc = true;
+
+/* ---------- theme handling ---------- */
+(function initTheme(){
+  const html = document.documentElement;
+  const saved = localStorage.getItem('spector-theme');
+  if(saved) html.setAttribute('data-theme', saved);
+  themeBtn.addEventListener('click', ()=>{
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('spector-theme', next);
+  });
+})();
+
+/* ---------- fetch data folder listing & populate picker ---------- */
+(async function discoverFiles(){
+  try{
+    const res = await fetch(DATA_DIR);
+    if(!res.ok) throw new Error('no listing');
+    const html = await res.text();
+    const re = /href="([^"]+\.(json|jsonl))"/g;
+    let match;
+    let found = false;
+    picker.innerHTML = ''; // clear
+    while((match = re.exec(html)) !== null){
+      const href = match[1];
+      picker.insertAdjacentHTML('beforeend', `<option value="${href}">${href}</option>`);
+      found = true;
+    }
+    if(!found){
+      // no files in data/ — show empty state but keep drop zone to allow drop
+      picker.innerHTML = `<option value="">(no files found)</option>`;
+      emptyState.style.display = 'flex';
+      tableWrap.style.display = 'none';
+      pagesEl.style.display = 'none';
+      totalInfo.textContent = '';
+    } else {
+      emptyState.style.display = 'none';
+      tableWrap.style.display = 'none'; // still hidden until load
+      pagesEl.style.display = 'none';
+      totalInfo.textContent = '';
+    }
+  }catch(err){
+    // fetch failed (e.g., data folder missing or hosting doesn't allow directory listing)
+    picker.innerHTML = `<option value="">(no files found)</option>`;
+    emptyState.style.display = 'flex';
+    tableWrap.style.display = 'none';
+    pagesEl.style.display = 'none';
+    totalInfo.textContent = '';
+    console.warn('Could not list data folder:', err);
+  }
+})();
+
+/* ---------- drag & drop ---------- */
+window.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('active');
+});
+window.addEventListener('dragleave', e => {
+  // only remove active when leaving the window or dropZone
+  dropZone.classList.remove('active');
+});
+window.addEventListener('drop', async e => {
+  e.preventDefault();
+  dropZone.classList.remove('active');
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if(!file) return;
+  const text = await file.text();
+  loadRaw(text, file.name);
+});
+
+/* ---------- load button ---------- */
+loadBtn.addEventListener('click', async ()=>{
+  const val = picker.value;
+  if(!val) {
+    // if none selected, show message
+    alert('No file selected from data/ — you can also drag & drop a file onto the page.');
+    return;
+  }
+  try{
+    const raw = await (await fetch(`${DATA_DIR}/${val}`)).text();
+    loadRaw(raw, val);
+  }catch(err){
+    alert('Failed to fetch file from data/ — check that the file exists and is accessible.');
+    console.error(err);
+  }
+});
+
+/* ---------- parse and load raw file content ---------- */
+function loadRaw(raw, name){
+  let data;
+  try{
+    // try parse as JSON array or object
+    data = JSON.parse(raw);
+    // if parsed object contains nested array, try to find the first array to display
+    data = findAnyArray(data);
+  }catch(e){
+    // not a JSON array/object — try JSONL (newline-delimited JSON)
+    data = raw.trim().split(/\r?\n/).map((line,i)=>{
+      try { return JSON.parse(line); }
+      catch(err){ return {_parseError: String(err.message), __line: i+1, __raw: line.slice(0,200)}; }
+    });
+  }
+
+  DS = Array.isArray(data) ? data : [data];
+  KEYS = [...new Set(DS.flatMap(r => (r && typeof r === 'object') ? Object.keys(r) : []))].sort();
+  page = 0;
+  totalInfo.textContent = `Total rows: ${DS.length.toLocaleString()}  (source: ${name})`;
+
+  // show table UI
+  emptyState.style.display = 'none';
+  tableWrap.style.display = 'block';
+  pagesEl.style.display = 'block';
+
+  renderAll();
+  updateScrollBar();
+}
+
+/* ---------- find an array inside an object if possible ---------- */
+function findAnyArray(node){
+  if(Array.isArray(node)) return node;
+  if(!node || typeof node !== 'object') return [node];
+  for(const [k,v] of Object.entries(node)){
+    if(Array.isArray(v)) return v;
+  }
+  for(const [k,v] of Object.entries(node)){
+    if(v && typeof v === 'object' && !Array.isArray(v)){
+      for(const [kk,vv] of Object.entries(v)) if(Array.isArray(vv)) return vv;
+    }
+  }
+  return [node];
+}
+
+/* ---------- rendering ---------- */
+function renderAll(){ renderHead(); renderBody(); renderPages(); updateScrollBar(); }
+
+function renderHead(){
+  if(!KEYS || KEYS.length === 0){
+    headEl.innerHTML = '<tr><th>(no keys)</th></tr>';
+    return;
+  }
+  headEl.innerHTML = '<tr>' + KEYS.map(k=>`<th data-k="${k}">${escapeHtml(k)}</th>`).join('') + '</tr>';
+  headEl.querySelectorAll('th').forEach(th => {
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', ()=> sort(th.dataset.k));
+  });
+}
+
+function renderBody(){
+  if(!DS || DS.length === 0){ bodyEl.innerHTML = '<tr><td>(no data)</td></tr>'; return; }
+  const start = page * SZ;
+  const rows = DS.slice(start, start + SZ);
+  bodyEl.innerHTML = rows.map((rec,i)=>`<tr data-idx="${start+i}">` + KEYS.map(k=>`<td>${fmt(rec[k])}</td>`).join('') + `</tr>`).join('');
+  bodyEl.querySelectorAll('tr').forEach(tr=>{
+    tr.addEventListener('click', ()=> showDrawer(+tr.dataset.idx));
+  });
+}
+
+function fmt(v){
+  if(v === null || v === undefined) return '';
+  if(typeof v === 'object') return `<code>${escapeHtml(JSON.stringify(v))}</code>`;
+  return escapeHtml(String(v)).replace(/\n/g,'<br>');
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ---------- pagination ---------- */
+function renderPages(){
+  const total = Math.max(1, Math.ceil(DS.length / SZ));
+  const MAX = 5;
+  let html = '';
+  const addBtn = (i, label=i+1, cls='') => `<button class="page-btn ${cls}" data-p="${i}">${label}</button>`;
+  html += addBtn(0, '1', page===0?'active':'');
+  if(page - MAX > 1) html += '<span style="margin:0 .35rem">…</span>';
+  const start = Math.max(1, page - MAX);
+  const end = Math.min(total - 2, page + MAX);
+  for(let i = start; i <= end; i++) html += addBtn(i, i+1, i===page?'active':'');
+  if(page + MAX < total - 2) html += '<span style="margin:0 .35rem">…</span>';
+  if(total > 1) html += addBtn(total-1, total, page===total-1?'active':'');
+
+  html += ` &nbsp; Go <input id="jumpIn" type="number" min="1" max="${total}" style="width:72px;padding:.25rem;margin-left:.6rem" value="${page+1}">`;
+
+  pagesEl.innerHTML = html;
+  pagesEl.querySelectorAll('button[data-p]').forEach(b => {
+    b.addEventListener('click', ()=> {
+      page = Number(b.dataset.p);
+      renderAll();
+    });
+  });
+  const jump = pagesEl.querySelector('#jumpIn');
+  if(jump){
+    jump.addEventListener('change', ()=> {
+      let val = Math.max(1, Math.min(total, Number(jump.value || 1)));
+      page = val - 1;
+      renderAll();
+    });
+  }
+}
+
+/* ---------- sorting ---------- */
+function sort(key){
+  DS.sort((a,b)=>{
+    const A = a && a[key] !== undefined ? a[key] : null;
+    const B = b && b[key] !== undefined ? b[key] : null;
+    // basic comparisons for strings/numbers
+    if(A === B) return 0;
+    if(A === null) return 1;
+    if(B === null) return -1;
+    if(typeof A === 'number' && typeof B === 'number') return (A > B ? 1 : -1) * (asc ? 1 : -1);
+    const sa = String(A).toLowerCase();
+    const sb = String(B).toLowerCase();
+    return (sa > sb ? 1 : -1) * (asc ? 1 : -1);
+  });
+  asc = !asc;
+  renderAll();
+}
+
+/* ---------- drawer (JSON details) ---------- */
+function showDrawer(idx){
+  const rec = DS[idx];
+  drawer.innerHTML = marked.parse('```json\n' + JSON.stringify(rec, null, 2) + '\n```');
+  overlay.style.display = 'block';
+  drawer.style.display = 'block';
+  drawer.setAttribute('aria-hidden', 'false');
+}
+overlay.addEventListener('click', ()=> {
+  overlay.style.display = 'none';
+  drawer.style.display = 'none';
+  drawer.setAttribute('aria-hidden', 'true');
+});
+
+/* ---------- scroll indicator adjustments ---------- */
+function updateScrollBar(){
+  // nothing fancy here, but ensure tableWrap scrolled area is measured for any layout changes
+  // keep for compatibility with previous code (no visible scrollbar element required)
+}
+window.addEventListener('resize', updateScrollBar);
+
+/* ---------- utility: update UI when no data loaded ---------- */
+function showNoDataUI(){
+  emptyState.style.display = 'flex';
+  tableWrap.style.display = 'none';
+  pagesEl.style.display = 'none';
+  totalInfo.textContent = '';
+}
+
+/* ---------- initial no-data fallback ---------- */
+showNoDataUI();
+
+/* ---------- helper: show a friendly parse error in empty state ---------- */
+function showParseError(msg){
+  emptyState.style.display = 'flex';
+  tableWrap.style.display = 'none';
+  pagesEl.style.display = 'none';
+  totalInfo.textContent = `Error: ${msg}`;
+}
+
+/* ---------- keyboard accessibility: Enter to load when picker focused ---------- */
+picker.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') loadBtn.click();
+});
+
+/* ---------- small helper logging for dev ---------- */
+console.log('Spector UI initialized — user: SyedaAnshrahGillani');
+
+</script>
+</body>
+</html>

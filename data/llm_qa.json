@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "question": "What is the capital of France?",
+    "answer": "Paris",
+    "category": "geography",
+    "difficulty": "easy"
+  },
+  {
+    "id": 2,
+    "question": "Explain Newton's first law of motion.",
+    "answer": "An object will remain at rest or in uniform motion unless acted upon by a force.",
+    "category": "physics",
+    "difficulty": "medium"
+  },
+  {
+    "id": 3,
+    "question": "Write a Python function to reverse a string.",
+    "answer": "def reverse_string(s):\n    return s[::-1]",
+    "category": "programming",
+    "difficulty": "medium"
+  },
+  {
+    "id": 4,
+    "question": "Who wrote 'Pride and Prejudice'?",
+    "answer": "Jane Austen",
+    "category": "literature",
+    "difficulty": "easy"
+  },
+  {
+    "id": 5,
+    "question": "Summarize the causes of World War I.",
+    "answer": "Assassination of Archduke Franz Ferdinand, militarism, alliances, imperialism, and nationalism.",
+    "category": "history",
+    "difficulty": "hard"
+  },
+  {
+    "id": 6,
+    "question": "Explain the concept of recursion in programming with an example.",
+    "answer": "Recursion is when a function calls itself. Example:\n\ndef factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n-1)",
+    "category": "programming",
+    "difficulty": "medium"
+  },
+  {
+    "id": 7,
+    "question": "Define photosynthesis and explain its importance.",
+    "answer": "Photosynthesis is the process by which green plants use sunlight to convert carbon dioxide and water into glucose and oxygen. It is vital as it produces food and oxygen for life on Earth.",
+    "category": "biology",
+    "difficulty": "medium"
+  },
+  {
+    "id": 8,
+    "question": "Translate 'Good morning, everyone!' to Spanish.",
+    "answer": "¡Buenos días a todos!",
+    "category": "language",
+    "difficulty": "easy"
+  },
+  {
+    "id": 9,
+    "question": "Explain blockchain technology in simple terms.",
+    "answer": "Blockchain is a distributed digital ledger where transactions are recorded in blocks, linked securely, and verified by multiple participants, making it tamper-proof.",
+    "category": "technology",
+    "difficulty": "hard"
+  },
+  {
+    "id": 10,
+    "question": "What are the main differences between machine learning and deep learning?",
+    "answer": "Machine learning is a subset of AI where models learn from data to make predictions. Deep learning is a subset of ML using neural networks with multiple layers to learn complex patterns.",
+    "category": "machine-learning",
+    "difficulty": "medium"
+  }
+]

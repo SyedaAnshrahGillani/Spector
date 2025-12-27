@@ -1,0 +1,74 @@
+[
+  {
+    "id":1,
+    "prompt":"Write a 4-line poem about the sea.",
+    "type":"creative-writing",
+    "difficulty":"medium"
+  },
+  {
+    "id":2,
+    "prompt":"Explain the difference between supervised and unsupervised learning.",
+    "type":"machine-learning",
+    "difficulty":"medium"
+  },
+  {
+    "id":3,
+    "prompt":"Translate the sentence 'Good morning, everyone!' to Spanish.",
+    "type":"translation",
+    "difficulty":"easy"
+  },
+  {
+    "id":4,
+    "prompt":"Generate a Python function that calculates the factorial of a number.",
+    "type":"programming",
+    "difficulty":"medium"
+  },
+  {
+    "id":5,
+    "prompt":"Summarize: 'Artificial Intelligence is the simulation of human intelligence in machines that are programmed to think like humans and mimic their actions.'",
+    "type":"summarization",
+    "difficulty":"hard"
+  },
+  {
+    "id":6,
+    "prompt":"Classify sentiment: 'I can't believe how amazing this new phone is!'",
+    "type":"sentiment-analysis",
+    "difficulty":"easy"
+  },
+  {
+    "id":7,
+    "prompt":"Explain blockchain technology in simple terms.",
+    "type":"technology",
+    "difficulty":"hard"
+  },
+  {
+    "id":8,
+    "prompt":"Write a SQL query to select all users older than 25 from a 'users' table.",
+    "type":"programming",
+    "difficulty":"medium"
+  },
+  {
+    "id":9,
+    "prompt":"Write a short story about a robot learning to feel emotions.",
+    "type":"creative-writing",
+    "difficulty":"hard"
+  },
+  {
+    "id":10,
+    "prompt":"Explain in simple words how a neural network works.",
+    "type":"machine-learning",
+    "difficulty":"medium"
+  },
+  {
+    "id":11,
+    "prompt":"Paraphrase: 'She decided to go to the market despite the rain.'",
+    "type":"nlp",
+    "difficulty":"medium"
+  },
+  {
+    "id":12,
+    "prompt":"Generate a JSON object for a book with title, author, and year published.",
+    "type":"data-formatting",
+    "difficulty":"easy"
+  }
+]
