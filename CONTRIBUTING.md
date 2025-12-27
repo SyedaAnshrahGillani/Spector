@@ -1,107 +1,56 @@
 
-# Contributing to Spector
+# Contributing to Spector ✨
 
-First of all, thank you for considering contributing! 🙌  
-Your help makes **Spector** better for everyone.
+Welcome! Spector is a tiny, privacy-first JSON viewer that lives in a single HTML file. We're delighted you're here to help make it better.
 
----
+## Why We Love Contributors
+Spector stays intentionally minimal—one file, zero dependencies—so your contributions have immediate impact on researchers and developers who need to inspect private data without uploads or servers.
 
-## Table of Contents
-1. [How to Contribute](#how-to-contribute)
-2. [Reporting Issues](#reporting-issues)
-3. [Feature Requests](#feature-requests)
-4. [Submitting Pull Requests](#submitting-pull-requests)
-5. [Coding Style](#coding-style)
-6. [Good First Issues](#good-first-issues)
-7. [Code of Conduct](#code-of-conduct)
+## Getting Started in 3 Steps
 
----
-
-## How to Contribute
-
-1. **Fork the repository** to your GitHub account.  
-2. **Clone your fork locally:**
+1. **Fork & clone**
    ```bash
-   git clone https://github.com/<your-username>/Spector.git
-````
-
-3. **Create a new branch** for your work:
-
-   ```bash
-   git checkout -b feature/my-new-feature
+   git clone https://github.com/YOUR_USERNAME/Spector.git
+   cd Spector
    ```
-4. Make your changes locally.
-5. Commit your changes with a clear message:
 
+2. **Run locally**
    ```bash
-   git commit -m "Add feature X / Fix bug Y"
+   python3 -m http.server 8000   # open http://localhost:8000
    ```
-6. Push your branch to your fork:
 
+3. **Branch & build**
    ```bash
-   git push origin feature/my-new-feature
+   git checkout -b feature/csv-support  # or fix/scroll-bug
    ```
-7. Open a **Pull Request (PR)** to merge into `main` of the original repository.
 
----
+## What We're Looking For
+- **New parsers**: CSV, TSV, XML (keep them tiny)
+- **UI polish**: dark-mode tweaks, mobile layout, keyboard shortcuts
+- **Performance**: faster rendering for 50 k+ rows
+- **Accessibility**: ARIA labels, focus traps, screen-reader hints
+- **Bug squashes**: edge-case files, browser quirks, typos
 
-## Reporting Issues
+## Single-File Rules (important!)
+- Everything lives inside `index.html`—no new files or folders
+- No external CDNs or npm packages
+- Keep the minified HTML < 500 KB
+- Test in Chrome, Firefox, Safari, Edge (latest two versions)
 
-If you encounter a bug or problem:
+## Submitting Your Work
+1. Open an issue first so we can coordinate
+2. Test with the sample datasets in `/data` plus your own nasty edge-cases
+3. Push your branch and open a PR; use clear titles:
+   ```
+   feat: add CSV drag-and-drop
+   fix: preserve scroll position on sort
+   docs: update browser support table
+   ```
+4. We'll review, suggest tweaks, and merge fast
 
-* Check if the issue already exists.
-* If not, open a new **issue** with:
+## Need Help?
+- Stuck? Comment on the issue—we're friendly
+- Unsure if an idea fits? Open a discussion
+- First PR? Label it `good first issue` and we'll guide you
 
-  * Clear description of the problem
-  * Steps to reproduce
-  * Screenshots (if applicable)
-  * Browser / OS info (since Spector is browser-based)
-
----
-
-## Feature Requests
-
-We love new ideas! Please open an issue with:
-
-* What the feature does
-* Why it’s useful
-* Optional: mockup, example, or reference
-
----
-
-## Submitting Pull Requests
-
-* Ensure your code works locally before submitting.
-* Follow the **Coding Style** below.
-* PR titles should be descriptive, e.g., `Add CSV import support` or `Fix JSON parsing bug`.
-* Link your PR to an existing issue if applicable.
-
----
-
-## Coding Style
-
-* Use **vanilla JS, HTML, CSS** (no extra frameworks)
-* Indentation: **2 spaces**
-* Descriptive variable & function names
-* Keep functions small & modular
-* Comment complex logic clearly
-
----
-
-## Good First Issues
-
-* Look for issues labeled `good first issue`
-* These are beginner-friendly and a great way to get started
-
----
-
-## Code of Conduct
-
-Please be respectful and constructive when interacting with others.
-See the [Code of Conduct](CODE_OF_CONDUCT.md) for more details.
-
----
-
-Thank you for helping improve Spector! 🚀
-
-
+Thanks for keeping Spector small, private, and powerful. Let's ship! 🚀
