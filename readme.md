@@ -37,6 +37,10 @@ It runs entirely in the browser using **HTML, CSS, and vanilla JavaScript**, wit
 
 > **From raw data to clarity — instantly and privately.**
 
+🎬 **Spector in action — upload, inspect, explore**
+
+![Upload Data Demo](src/videos/upload_data.gif)
+
 ---
 
 ## Key Features
@@ -50,9 +54,6 @@ It runs entirely in the browser using **HTML, CSS, and vanilla JavaScript**, wit
 * 🔒 100% client-side (no uploads, no tracking)
 * 🧩 Friendly empty state with guidance
 
-🎬 **Spector in action — upload, inspect, explore**
-
-![Upload Data Demo](src/videos/upload_data.gif)
 
 ---
 
