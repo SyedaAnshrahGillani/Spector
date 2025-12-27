@@ -6,10 +6,8 @@
 
 🎬 **Spector in action — instant data exploration**
 
-<video width="100%" controls autoplay loop muted>
-  <source src="src/videos/upload_data.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Upload Data Demo](src/videos/upload_data.gif)
+
 
 Spector is a **lightweight, offline JSON / JSONL viewer** designed for developers, data scientists, and AI practitioners. Drag & drop files or select from the `data/` folder to inspect your data instantly — all in the browser. No uploads, no telemetry, 100% client-side.
 
