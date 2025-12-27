@@ -41,6 +41,10 @@ spector/
  │   └─ vibe_queries.jsonl
 ```
 
+🎬 **Spector in action — example data loading**
+
+![Upload Data Demo](src/videos/upload_data.gif)
+
 **Example `data/llm_qa.json`** (array of Q&A records):
 
 ```json
