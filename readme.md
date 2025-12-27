@@ -6,7 +6,7 @@
 
 🎬 **Spector in action — instant data exploration**
 
-![Upload Data Demo](https://raw.githubusercontent.com/SyedaAnshrahGillani/spector/main/src/videos/upload_data.gif)
+![Upload Data Demo](src/videos/upload_data.gif)
 
 
 
