@@ -198,11 +198,12 @@ Example manifest:
 
 ---
 
-## Releases
+## Release Notes
 
-| Version    | Date       | Highlights                                                                                                                       |
-| ---------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **v1.0.0** | 2025-01-27 | Initial release — offline JSON/JSONL viewer, LLM datasets, drag & drop, pagination, JSON drawer, empty state, full documentation |
+| Version   | Date       | Highlights |
+|----------|-----------|------------|
+| 🚀 **v1.0.0** | 2025-12-28 | Initial release — offline JSON/JSONL viewer, LLM datasets support, drag & drop & file picker, table with pagination & sorting, JSON drawer for nested objects, empty state placeholder, demo media, full HTML/JS implementation, professional README, MIT license |
+
 
 ---
 
