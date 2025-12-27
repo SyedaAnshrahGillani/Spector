@@ -5,10 +5,6 @@
 
 ![Spector Hero](src/images/hero.png)
 
-🎬 **Spector in action — upload, inspect, explore**
-
-![Upload Data Demo](src/videos/upload_data.gif)
-
 ---
 
 ## Why Spector Exists
@@ -53,6 +49,10 @@ It runs entirely in the browser using **HTML, CSS, and vanilla JavaScript**, wit
 * 🧠 Designed for **LLM datasets and evaluations**
 * 🔒 100% client-side (no uploads, no tracking)
 * 🧩 Friendly empty state with guidance
+
+🎬 **Spector in action — upload, inspect, explore**
+
+![Upload Data Demo](src/videos/upload_data.gif)
 
 ---
 
