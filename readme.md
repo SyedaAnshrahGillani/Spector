@@ -159,8 +159,8 @@ spector/
 
 | Action                      | Link                                              |
 | --------------------------- | ------------------------------------------------- |
-| Upload data & explore       | [upload_data.mp4](src/videos/upload_data.mp4)     |
-| View examples & JSON drawer | [view_examples.mp4](src/videos/view_examples.mp4) |
+| Upload data & explore       | [upload_data.mp4](src/videos/upload_data.mov)     |
+| View examples & JSON drawer | [view_examples.mp4](src/videos/view_examples.mov) |
 
 ---
 
