@@ -1,7 +1,6 @@
 # Spector — Instant Private Data Viewer
 
 **Crafted with ❤️ by Syeda Anshrah Gillani**
-🔗 [https://github.com/SyedaAnshrahGillani/spector](https://github.com/SyedaAnshrahGillani/spector)
 
 ![Spector Hero](src/images/hero.png)
 
