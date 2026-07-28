@@ -1,27 +1,48 @@
 /**
  * SPECTOR V2 - Multi-Format Data Parser Engine
- * Parses JSON, JSONL, CSV, TSV datasets with streaming & field auto-type detection.
+ * Handles JSON, JSONL, CSV, and TSV formats cleanly with resilient fallbacks.
  */
 
 export class DataParser {
   /**
-   * Parse a raw string content based on filename extension or auto-detection
+   * Parse raw string content using robust format detection & fallbacks
    */
   static parse(content, fileName = '') {
-    const ext = fileName.split('.').pop().toLowerCase();
+    if (!content || !content.trim()) return [];
 
-    if (ext === 'jsonl' || content.trim().startsWith('{')) {
-      return this.parseJSONL(content);
-    } else if (ext === 'json' || (content.trim().startsWith('[') && content.trim().endsWith(']'))) {
-      return this.parseJSON(content);
-    } else if (ext === 'csv' || ext === 'tsv' || content.includes(',')) {
-      return this.parseCSV(content, ext === 'tsv' ? '\t' : ',');
+    // Strip BOM character if present
+    let cleanContent = content.trim();
+    if (cleanContent.charCodeAt(0) === 0xFEFF) {
+      cleanContent = cleanContent.slice(1).trim();
     }
 
-    // Default fallback try JSON then JSONL then CSV
-    try { return this.parseJSON(content); } catch (e1) {
-      try { return this.parseJSONL(content); } catch (e2) {
-        return this.parseCSV(content, ',');
+    const ext = fileName.split('.').pop().toLowerCase();
+
+    // Strategy 1: Explicit CSV/TSV extension
+    if (ext === 'csv' || ext === 'tsv') {
+      return this.parseCSV(cleanContent, ext === 'tsv' ? '\t' : ',');
+    }
+
+    // Strategy 2: Explicit JSONL extension
+    if (ext === 'jsonl') {
+      try {
+        return this.parseJSONL(cleanContent);
+      } catch (err) {
+        // Fallback try full JSON if single JSON array was named .jsonl by mistake
+        return this.parseJSON(cleanContent);
+      }
+    }
+
+    // Strategy 3: Try full JSON parse (handles formatted .json objects & arrays)
+    try {
+      return this.parseJSON(cleanContent);
+    } catch (e1) {
+      // Strategy 4: Try JSONL line-by-line parse
+      try {
+        return this.parseJSONL(cleanContent);
+      } catch (e2) {
+        // Strategy 5: Fallback to CSV parse
+        return this.parseCSV(cleanContent, ',');
       }
     }
   }
@@ -48,8 +69,8 @@ export class DataParser {
       }
     }
 
-    if (records.length === 0 && errorCount > 0) {
-      throw new Error("Failed to parse JSONL file. Lines are not valid JSON.");
+    if (records.length === 0) {
+      throw new Error("Failed to parse JSONL file. No valid JSON lines found.");
     }
     return records;
   }
