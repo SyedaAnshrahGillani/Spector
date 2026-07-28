@@ -295,4 +295,5 @@ class SpectorApp {
 // Instantiate App on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   window.spectorApp = new SpectorApp();
+  console.log("%c⚡ Spector V2 Studio - Privacy-First Dataset & LLM Studio (by Syeda Anshrah Gillani)", "color: #818cf8; font-weight: bold; font-size: 14px;");
 });
