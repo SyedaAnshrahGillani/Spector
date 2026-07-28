@@ -1,6 +1,6 @@
 /**
  * SPECTOR V2 STUDIO - Interactive Data Table Component
- * Features value auto-formatting, sticky header scrolling, & flexible page size selection.
+ * Features value auto-formatting, clamped pagination, column sorting, & responsive cell truncation.
  */
 
 import { DataParser } from '../engine/dataParser.js';
@@ -9,14 +9,16 @@ export function renderTableView(containerEl, state, callbacks) {
   const records = state.filteredRecords || state.records || [];
   const columns = DataParser.extractColumns(records);
 
-  const page = state.currentPage || 1;
-  const pageSize = state.pageSize === 'all' ? (records.length || 1) : (parseInt(state.pageSize, 10) || 25);
-  const totalPages = Math.ceil(records.length / pageSize) || 1;
+  const pageSizeRaw = state.pageSize === 'all' ? (records.length || 1) : (parseInt(state.pageSize, 10) || 25);
+  const pageSize = Math.max(1, pageSizeRaw);
+  const totalPages = Math.max(1, Math.ceil(records.length / pageSize));
+  const page = Math.max(1, Math.min(state.currentPage || 1, totalPages));
+
   const startIndex = (page - 1) * pageSize;
   const pageRecords = records.slice(startIndex, startIndex + pageSize);
 
   containerEl.innerHTML = `
-    <div class="flex flex-col flex-1 overflow-hidden animate-fade-in" style="min-height: 0;">
+    <div class="flex flex-col flex-1 overflow-hidden animate-fade-in" style="min-height: 0; width: 100%;">
       <!-- Table Controls Bar -->
       <div class="control-bar flex items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -49,15 +51,22 @@ export function renderTableView(containerEl, state, callbacks) {
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 50px;">#</th>
-                ${columns.map(col => `
-                  <th class="cursor-pointer sortable-col" data-col="${col}">
-                    <div class="flex items-center gap-1">
-                      <span>${col}</span>
-                      <span class="text-xs text-muted">${state.sortCol === col ? (state.sortDir === 'asc' ? '▲' : '▼') : '↕'}</span>
-                    </div>
-                  </th>
-                `).join('')}
+                <th style="width: 55px;">#</th>
+                ${columns.map(col => {
+                  let colWidth = '160px';
+                  if (col === 'idx' || col === 'id') colWidth = '75px';
+                  if (col === 'difficulty' || col === 'domain') colWidth = '120px';
+                  if (col === 'query' || col === 'prompt' || col === 'instruction' || col === 'response') colWidth = '420px';
+
+                  return `
+                    <th class="cursor-pointer sortable-col" data-col="${col}" style="width: ${colWidth};">
+                      <div class="flex items-center justify-between gap-1">
+                        <span class="truncate">${col}</span>
+                        <span class="text-xs text-muted">${state.sortCol === col ? (state.sortDir === 'asc' ? '▲' : '▼') : '↕'}</span>
+                      </div>
+                    </th>
+                  `;
+                }).join('')}
               </tr>
             </thead>
             <tbody>
@@ -78,10 +87,10 @@ export function renderTableView(containerEl, state, callbacks) {
       <!-- Pagination Footer -->
       <div class="pagination-bar flex items-center justify-between">
         <div class="flex items-center gap-3 text-xs text-muted font-mono">
-          <span>Showing ${startIndex + 1} to ${Math.min(startIndex + pageSize, records.length)} of ${records.length} records</span>
+          <span>Showing ${records.length === 0 ? 0 : startIndex + 1} to ${Math.min(startIndex + pageSize, records.length)} of ${records.length.toLocaleString()} records</span>
           
           <div class="flex items-center gap-1">
-            <span>Rows per page:</span>
+            <span>Rows:</span>
             <select id="selectPageSize" class="input-text text-xs py-1 px-2" style="width: auto;">
               <option value="25" ${state.pageSize == 25 ? 'selected' : ''}>25</option>
               <option value="50" ${state.pageSize == 50 ? 'selected' : ''}>50</option>
@@ -93,9 +102,13 @@ export function renderTableView(containerEl, state, callbacks) {
         </div>
 
         <div class="flex items-center gap-2">
+          <button id="btnFirstPage" class="btn btn-ghost text-xs" ${page <= 1 ? 'disabled' : ''}>« First</button>
           <button id="btnPrevPage" class="btn btn-ghost text-xs" ${page <= 1 ? 'disabled' : ''}>◀ Prev</button>
+          
           <span class="text-xs font-mono px-2 text-indigo">Page ${page} of ${totalPages}</span>
+          
           <button id="btnNextPage" class="btn btn-ghost text-xs" ${page >= totalPages ? 'disabled' : ''}>Next ▶</button>
+          <button id="btnLastPage" class="btn btn-ghost text-xs" ${page >= totalPages ? 'disabled' : ''}>Last »</button>
         </div>
       </div>
     </div>
@@ -114,8 +127,10 @@ export function renderTableView(containerEl, state, callbacks) {
   containerEl.querySelector('#btnExportJSONL')?.addEventListener('click', () => callbacks.onExport('jsonl'));
   containerEl.querySelector('#btnExportCSV')?.addEventListener('click', () => callbacks.onExport('csv'));
 
+  containerEl.querySelector('#btnFirstPage')?.addEventListener('click', () => callbacks.onPageChange(1));
   containerEl.querySelector('#btnPrevPage')?.addEventListener('click', () => callbacks.onPageChange(page - 1));
   containerEl.querySelector('#btnNextPage')?.addEventListener('click', () => callbacks.onPageChange(page + 1));
+  containerEl.querySelector('#btnLastPage')?.addEventListener('click', () => callbacks.onPageChange(totalPages));
 
   // Sorting
   containerEl.querySelectorAll('.sortable-col').forEach(th => {
@@ -157,7 +172,7 @@ function formatCellValue(val) {
   }
 
   const str = String(val);
-  return `<span title="${escapeHtml(str)}">${escapeHtml(str)}</span>`;
+  return `<span title="${escapeHtml(str)}" class="truncate block">${escapeHtml(str)}</span>`;
 }
 
 function escapeHtml(str) {

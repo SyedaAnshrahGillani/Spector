@@ -1,5 +1,6 @@
 /* ==========================================================================
    SPECTOR V2 STUDIO - COMPONENT STYLES
+   Responsive Table, Fix Layout Overflow & Mobile Horizontal Scrolling
    ========================================================================== */
 
 /* Main Header Bar */
@@ -7,7 +8,7 @@
   height: 60px;
   background: var(--bg-header);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
@@ -34,7 +35,7 @@
 
 /* App Control Bar (below header) */
 .control-bar {
-  padding: 0.85rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   flex-wrap: wrap;
@@ -43,7 +44,8 @@
 /* Main Workspace Split */
 .workspace-container {
   flex: 1;
-  min-height: 0; /* CRITICAL FLEXBOX SCROLL FIX */
+  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -83,7 +85,8 @@
 /* Data Table Container - Full Viewport Vertical & Horizontal Scroll */
 .table-container {
   flex: 1;
-  min-height: 0; /* CRITICAL FLEXBOX SCROLL FIX */
+  min-height: 0;
+  width: 100%;
   overflow: auto;
   background: var(--bg-base);
   position: relative;
@@ -91,6 +94,8 @@
 
 .data-table {
   width: 100%;
+  min-width: 700px;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.88rem;
@@ -104,18 +109,19 @@
   color: var(--text-secondary);
   font-weight: 600;
   text-align: left;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.85rem;
   border-bottom: 1px solid var(--border-subtle);
   user-select: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .data-table td {
-  padding: 0.7rem 1rem;
+  padding: 0.65rem 0.85rem;
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  max-width: 380px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,16 +137,17 @@
 
 /* Pagination Bar */
 .pagination-bar {
-  padding: 0.65rem 1.5rem;
+  padding: 0.65rem 1.25rem;
   background: var(--bg-header);
   border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
 }
 
 /* SQL Console Box */
 .sql-panel {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 1rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
@@ -240,6 +247,7 @@
   top: 0;
   right: -600px;
   width: 600px;
+  max-width: 100vw;
   height: 100%;
   background: var(--bg-card);
   border-left: 1px solid var(--border-strong);
@@ -264,4 +272,12 @@
   flex: 1;
   overflow: auto;
   padding: 1.25rem;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app-header { padding: 0 0.85rem; }
+  .control-bar { padding: 0.65rem 0.85rem; flex-direction: column; align-items: stretch; }
+  .pagination-bar { padding: 0.65rem 0.85rem; flex-direction: column; gap: 0.5rem; }
+  .diff-container { grid-template-columns: 1fr; }
 }
