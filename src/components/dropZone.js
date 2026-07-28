@@ -1,16 +1,14 @@
 /**
- * SPECTOR V2 - DropZone & Initial Load Hero Component
+ * SPECTOR V2 - DropZone & Initial Load Hero Component with V2 Logo Branding
  */
 
 export function renderDropZone(containerEl, callbacks) {
   containerEl.innerHTML = `
     <div class="flex flex-col items-center justify-center flex-1 p-6 text-center animate-fade-in">
       <div id="dropZone" class="hero-dropzone flex flex-col items-center justify-center">
-        <div class="dropzone-icon flex items-center justify-center">
-          <svg width="56" height="56" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-          </svg>
-        </div>
+        <!-- V2 Branding Logo Icon -->
+        <img src="src/images/spector-logo.png" alt="Spector V2 Logo" style="width:84px; height:84px; border-radius:18px; box-shadow: 0 0 35px rgba(99, 102, 241, 0.4); margin-bottom: 1.25rem;" />
+        
         <h2 class="text-2xl font-bold mb-2 tracking-tight">Inspect your datasets privately & instantly</h2>
         <p class="text-secondary text-sm mb-6 max-w-lg">Supports <span class="font-mono text-indigo font-semibold">JSON</span>, <span class="font-mono text-indigo font-semibold">JSONL</span>, <span class="font-mono text-indigo font-semibold">CSV</span>, and <span class="font-mono text-indigo font-semibold">TSV</span>. 100% Private, Client-Side processing with Zero Server Uploads.</p>
         

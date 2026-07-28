@@ -1,11 +1,17 @@
 # ⚡ Spector V2 Studio
 
-> **The Privacy-First Data & LLM Evaluation Studio.**
-> Inspect, query with SQL, compare prompt diffs, and sanitize private datasets 100% in-browser. Zero servers, zero tracking, zero limits.
+<p align="center">
+  <img src="src/images/spector-logo.png" alt="Spector V2 Studio Logo" width="160" style="border-radius: 24px; box-shadow: 0 0 40px rgba(99,102,241,0.5);" />
+</p>
+
+<p align="center">
+  <b>The Privacy-First Data & LLM Evaluation Studio.</b><br/>
+  Inspect, query with SQL, compare prompt diffs, and sanitize private datasets 100% in-browser. Zero servers, zero tracking, zero limits.
+</p>
 
 ---
 
-![Spector Studio Banner](src/images/hero.png)
+![Spector Studio V2 Showcase Banner](src/images/hero.png)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-2.0.0--studio-6366f1.svg)](https://github.com/SyedaAnshrahGillani/Spector)
@@ -26,14 +32,14 @@ Existing web dataset viewers require **cloud uploads**, **paid private tier subs
 ## 🚀 Key V2 Features
 
 ### 🔗 1. Direct GitHub Repository & File Auto-Sync
-- Paste any GitHub file link (`github.com/user/repo/blob/main/data.jsonl`) or raw URL.
+- Paste any GitHub file link (`github.com/user/repo/blob/main/data/llm_benchmark.json`) or raw URL.
 - Stream datasets directly from GitHub without manually downloading & uploading.
 - Supports private enterprise repos via Personal Access Tokens (PAT).
 
 ### ⚡ 2. In-Browser SQL Query Console (DuckDB Powered)
 - Execute real SQL queries directly over loaded datasets:
 ```sql
-SELECT instruction, quality_score FROM dataset WHERE quality_score > 0.9 ORDER BY id DESC LIMIT 50
+SELECT model_name, quality_score FROM dataset WHERE quality_score > 0.9 ORDER BY latency_ms ASC LIMIT 50
 ```
 
 ### 🤖 3. Side-by-Side LLM Prompt/Response Diff Viewer
@@ -63,14 +69,14 @@ Simply open `index.html` in any modern web browser or serve locally:
 ```bash
 git clone https://github.com/SyedaAnshrahGillani/Spector.git
 cd Spector
-python3 -m http.server 8080
+python3 -m http.server 8090
 ```
-Then visit: `http://localhost:8080`
+Then visit: `http://localhost:8090`
 
 ### Option B: Run via Terminal CLI
 Launch Spector instantly from your terminal:
 ```bash
-npx spector-cli ./data/llm_eval.jsonl
+npx spector-cli ./data/llm_benchmark.json
 ```
 
 ---
