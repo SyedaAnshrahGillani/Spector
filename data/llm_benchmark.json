@@ -1,0 +1,62 @@
+[
+  {
+    "id": "eval-001",
+    "model_name": "GPT-4o-2024-08-06",
+    "prompt": "Write a high-performance Python function to compute the Fibonacci sequence using memoization.",
+    "response": "def fibonacci(n, memo={}):\n    if n in memo: return memo[n]\n    if n <= 1: return n\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n    return memo[n]",
+    "quality_score": 0.98,
+    "latency_ms": 245,
+    "token_count": 84,
+    "pass_validation": true,
+    "tags": ["python", "algorithms", "benchmark"],
+    "created_at": "2026-07-29T02:00:00Z"
+  },
+  {
+    "id": "eval-002",
+    "model_name": "Claude-3-5-Sonnet",
+    "prompt": "Explain the difference between TCP and UDP networking protocols.",
+    "response": "TCP is a connection-oriented, reliable protocol providing ordered byte-stream delivery with error checking. UDP is a connectionless, lightweight protocol optimized for speed without delivery guarantees.",
+    "quality_score": 0.96,
+    "latency_ms": 310,
+    "token_count": 112,
+    "pass_validation": true,
+    "tags": ["networking", "architecture", "qa"],
+    "created_at": "2026-07-29T02:01:15Z"
+  },
+  {
+    "id": "eval-003",
+    "model_name": "Llama-3-70B-Instruct",
+    "prompt": "Generate a CSS glassmorphism card style with dark mode support.",
+    "response": ".glass-card { background: rgba(18, 22, 31, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; }",
+    "quality_score": 0.92,
+    "latency_ms": 180,
+    "token_count": 65,
+    "pass_validation": true,
+    "tags": ["css", "frontend", "design"],
+    "created_at": "2026-07-29T02:02:40Z"
+  },
+  {
+    "id": "eval-004",
+    "model_name": "Mistral-Large-2",
+    "prompt": "What is the capital of Australia?",
+    "response": "The capital of Australia is Canberra.",
+    "quality_score": 1.00,
+    "latency_ms": 120,
+    "token_count": 28,
+    "pass_validation": true,
+    "tags": ["geography", "qa", "easy"],
+    "created_at": "2026-07-29T02:03:00Z"
+  },
+  {
+    "id": "eval-005",
+    "model_name": "GPT-4o-mini",
+    "prompt": "Implement a binary search in JavaScript.",
+    "response": "function binarySearch(arr, target) {\n  let left = 0, right = arr.length - 1;\n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return -1;\n}",
+    "quality_score": 0.95,
+    "latency_ms": 210,
+    "token_count": 95,
+    "pass_validation": true,
+    "tags": ["javascript", "algorithms", "benchmark"],
+    "created_at": "2026-07-29T02:04:10Z"
+  }
+]

@@ -1,5 +1,6 @@
 /**
- * SPECTOR V2 - Interactive Data Table Component
+ * SPECTOR V2 STUDIO - Interactive Data Table Component
+ * Features value auto-formatting (badges for booleans, pills for tags, mono numbers), column sorting, & pagination.
  */
 
 import { DataParser } from '../engine/dataParser.js';
@@ -15,24 +16,27 @@ export function renderTableView(containerEl, state, callbacks) {
   const pageRecords = records.slice(startIndex, startIndex + pageSize);
 
   containerEl.innerHTML = `
-    <div class="flex flex-col flex-1 overflow-hidden">
+    <div class="flex flex-col flex-1 overflow-hidden animate-fade-in">
       <!-- Table Controls Bar -->
-      <div class="control-bar flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-          <input type="text" id="searchInput" class="input-text" placeholder="🔍 Quick search fields..." value="${state.searchQuery || ''}" style="width: 240px;" />
-          <span class="text-xs text-secondary font-mono">${records.length.toLocaleString()} records loaded</span>
+      <div class="control-bar flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <input type="text" id="searchInput" class="input-text" placeholder="🔍 Quick search dataset..." value="${state.searchQuery || ''}" style="width: 260px;" />
+          <span class="badge badge-indigo font-mono">${records.length.toLocaleString()} Records</span>
+          ${state.filteredRecords && state.filteredRecords.length !== (state.records || []).length ? `
+            <span class="badge badge-amber font-mono">Filtered from ${(state.records || []).length.toLocaleString()}</span>
+          ` : ''}
         </div>
 
         <div class="flex items-center gap-2">
           <button id="btnSQLToggle" class="btn ${state.sqlActive ? 'btn-primary' : 'btn-ghost'} text-xs">
-            <span>⚡ SQL Query</span>
+            <span>⚡ SQL Query Console</span>
           </button>
           
           <button id="btnExportJSONL" class="btn btn-ghost text-xs">
-            <span>⬇️ Export .jsonl</span>
+            <span>⬇️ Export JSONL</span>
           </button>
           <button id="btnExportCSV" class="btn btn-ghost text-xs">
-            <span>⬇️ Export .csv</span>
+            <span>⬇️ Export CSV</span>
           </button>
         </div>
       </div>
@@ -40,15 +44,18 @@ export function renderTableView(containerEl, state, callbacks) {
       <!-- Data Table Wrap -->
       <div class="table-container">
         ${pageRecords.length === 0 ? `
-          <div class="p-8 text-center text-muted">No matching records found.</div>
+          <div class="p-12 text-center text-muted">No matching records found.</div>
         ` : `
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 40px;">#</th>
+                <th style="width: 50px;">#</th>
                 ${columns.map(col => `
                   <th class="cursor-pointer sortable-col" data-col="${col}">
-                    ${col} ${state.sortCol === col ? (state.sortDir === 'asc' ? '▲' : '▼') : ''}
+                    <div class="flex items-center gap-1">
+                      <span>${col}</span>
+                      <span class="text-xs text-muted">${state.sortCol === col ? (state.sortDir === 'asc' ? '▲' : '▼') : '↕'}</span>
+                    </div>
                   </th>
                 `).join('')}
               </tr>
@@ -59,8 +66,7 @@ export function renderTableView(containerEl, state, callbacks) {
                   <td class="text-muted text-xs font-mono">${startIndex + idx + 1}</td>
                   ${columns.map(col => {
                     const val = row[col];
-                    const valStr = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val ?? '');
-                    return `<td title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
+                    return `<td>${formatCellValue(val)}</td>`;
                   }).join('')}
                 </tr>
               `).join('')}
@@ -71,13 +77,13 @@ export function renderTableView(containerEl, state, callbacks) {
 
       <!-- Pagination Footer -->
       <div class="pagination-bar flex items-center justify-between">
-        <div class="text-xs text-muted">
+        <div class="text-xs text-muted font-mono">
           Showing ${startIndex + 1} to ${Math.min(startIndex + pageSize, records.length)} of ${records.length} records
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-2">
           <button id="btnPrevPage" class="btn btn-ghost text-xs" ${page <= 1 ? 'disabled' : ''}>◀ Prev</button>
-          <span class="text-xs font-mono px-2">Page ${page} of ${totalPages}</span>
+          <span class="text-xs font-mono px-2 text-indigo">Page ${page} of ${totalPages}</span>
           <button id="btnNextPage" class="btn btn-ghost text-xs" ${page >= totalPages ? 'disabled' : ''}>Next ▶</button>
         </div>
       </div>
@@ -111,6 +117,32 @@ export function renderTableView(containerEl, state, callbacks) {
       callbacks.onRowClick(records[idx], idx);
     });
   });
+}
+
+/**
+ * Format cell value based on data type (Boolean badges, number coloring, array tags)
+ */
+function formatCellValue(val) {
+  if (val === null || val === undefined) {
+    return `<span class="text-muted text-xs font-mono">null</span>`;
+  }
+  if (typeof val === 'boolean') {
+    return val 
+      ? `<span class="badge badge-emerald">TRUE</span>`
+      : `<span class="badge badge-rose">FALSE</span>`;
+  }
+  if (typeof val === 'number') {
+    return `<span class="text-purple font-mono font-semibold">${val}</span>`;
+  }
+  if (Array.isArray(val)) {
+    return val.map(t => `<span class="badge badge-indigo text-xs mr-1">${escapeHtml(String(t))}</span>`).join('');
+  }
+  if (typeof val === 'object') {
+    return `<span class="text-xs font-mono text-indigo">{${Object.keys(val).length} fields}</span>`;
+  }
+
+  const str = String(val);
+  return `<span title="${escapeHtml(str)}">${escapeHtml(str)}</span>`;
 }
 
 function escapeHtml(str) {

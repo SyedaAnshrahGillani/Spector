@@ -1,23 +1,25 @@
 /* ==========================================================================
-   SPECTOR V2 - DESIGN SYSTEM & STYLES
-   Obsidian Dark / Modern Minimalist Aesthetic
+   SPECTOR V2 STUDIO - ULTRA-PREMIUM OBSIDIAN DESIGN SYSTEM
+   Inspired by Linear, Vercel, & Supabase Enterprise UI
    ========================================================================== */
 
 :root {
-  /* Color Palette - Obsidian Dark Theme */
-  --bg-base: #0b0d11;
-  --bg-surface: #12161f;
-  --bg-surface-hover: #1a202c;
-  --bg-card: #161b26;
-  --bg-header: #0e1117;
+  /* Color Palette - Obsidian Deep Space */
+  --bg-base: #080a0f;
+  --bg-surface: #0f131c;
+  --bg-surface-hover: #171d2b;
+  --bg-card: #121722;
+  --bg-header: #0a0d14;
+  --bg-glass: rgba(15, 19, 28, 0.75);
   
-  --border-subtle: #232a3b;
+  --border-subtle: #1e2638;
   --border-focus: #6366f1;
-  --border-strong: #333d54;
+  --border-strong: #2e3b56;
+  --border-glow: rgba(99, 102, 241, 0.4);
 
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
   /* Accent Colors */
   --accent-primary: #6366f1; /* Electric Indigo */
@@ -28,17 +30,20 @@
   --accent-emerald-glow: rgba(16, 185, 129, 0.2);
   
   --accent-amber: #f59e0b; /* Amber */
-  --accent-rose: #ef4444; /* Rose Red */
+  --accent-rose: #ef4444; /* Rose */
   --accent-cyan: #06b6d4; /* Cyan */
+  --accent-purple: #a855f7; /* Violet */
 
   /* UI Tokens */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
   
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.4);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+  --shadow-emerald-glow: 0 0 25px rgba(16, 185, 129, 0.25);
   
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
@@ -49,22 +54,24 @@
   --bg-surface: #ffffff;
   --bg-surface-hover: #f1f5f9;
   --bg-card: #ffffff;
-  --bg-header: #f1f5f9;
+  --bg-header: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.85);
   
   --border-subtle: #e2e8f0;
   --border-focus: #6366f1;
   --border-strong: #cbd5e1;
+  --border-glow: rgba(99, 102, 241, 0.2);
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
 
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
-  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.1);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
 }
 
-/* Global Reset & Base */
+/* Global Reset & Smooth Scroll */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -78,17 +85,52 @@ html, body {
   font-family: var(--font-sans);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography Helpers */
+/* Background Grid Pattern */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+/* Typography & Colors */
 .font-mono { font-family: var(--font-mono); }
 .text-xs { font-size: 0.75rem; }
 .text-sm { font-size: 0.85rem; }
 .text-base { font-size: 0.95rem; }
-.text-lg { font-size: 1.1rem; }
-.text-xl { font-size: 1.3rem; }
+.text-lg { font-size: 1.15rem; }
+.text-xl { font-size: 1.35rem; }
+.text-2xl { font-size: 1.75rem; }
 
-/* Flex & Layout Utilities */
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-indigo { color: #818cf8; }
+.text-emerald { color: #34d399; }
+.text-amber { color: #fbbf24; }
+.text-rose { color: #f87171; }
+.text-purple { color: #c084fc; }
+
+/* Flex & Grid Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .items-center { align-items: center; }
@@ -98,14 +140,17 @@ html, body {
 .gap-2 { gap: 0.5rem; }
 .gap-3 { gap: 0.75rem; }
 .gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
 .flex-1 { flex: 1; }
+.w-full { width: 100%; }
 
-/* Buttons & Controls */
+/* Buttons & Interactive Controls */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.85rem;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem;
   font-size: 0.85rem;
   font-weight: 500;
   border-radius: var(--radius-sm);
@@ -113,34 +158,43 @@ html, body {
   background: var(--bg-surface);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  white-space: nowrap;
 }
 
 .btn:hover {
   background: var(--bg-surface-hover);
   border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn-primary {
-  background: var(--accent-primary);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: #ffffff;
-  border-color: var(--accent-primary);
+  border-color: #6366f1;
   box-shadow: var(--shadow-glow);
 }
 
 .btn-primary:hover {
-  background: var(--accent-primary-hover);
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
 }
 
 .btn-emerald {
-  background: var(--accent-emerald);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
-  border-color: var(--accent-emerald);
+  border-color: #10b981;
+  box-shadow: var(--shadow-emerald-glow);
 }
 
 .btn-emerald:hover {
-  background: #059669;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
 
 .btn-ghost {
@@ -150,16 +204,19 @@ html, body {
 
 .btn-ghost:hover {
   background: var(--bg-surface-hover);
+  border-color: var(--border-subtle);
 }
 
+/* Badges & Tags */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.2rem 0.5rem;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
@@ -183,13 +240,31 @@ html, body {
   color: #fbbf24;
 }
 
-/* Glassmorphism Card */
+.badge-rose {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.badge-purple {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+}
+
+/* Glassmorphism Cards */
 .glass-card {
-  background: rgba(18, 22, 31, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-strong);
 }
 
 /* Inputs & Form Controls */
@@ -197,19 +272,34 @@ html, body {
   background: var(--bg-base);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  padding: 0.45rem 0.75rem;
+  padding: 0.5rem 0.85rem;
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .input-text:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
-/* Scrollbar Styling */
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

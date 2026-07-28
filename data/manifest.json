@@ -1,5 +1,6 @@
 {
   "files": [
+    "llm_benchmark.json",
     "llm_eval.jsonl",
     "llm_qa.json",
     "vibe_queries.jsonl"
