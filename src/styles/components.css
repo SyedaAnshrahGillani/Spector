@@ -40,29 +40,12 @@
   flex-wrap: wrap;
 }
 
-/* Analytics Stats Strip (Live dataset stats) */
-.analytics-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  padding: 0.85rem 1.5rem;
-  background: rgba(15, 19, 28, 0.95);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.stat-widget {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 0.65rem 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Main Workspace Split */
 .workspace-container {
   flex: 1;
+  min-height: 0; /* CRITICAL FLEXBOX SCROLL FIX */
   display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -97,9 +80,10 @@
   filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
 }
 
-/* Data Table Component */
+/* Data Table Container - Full Viewport Vertical & Horizontal Scroll */
 .table-container {
   flex: 1;
+  min-height: 0; /* CRITICAL FLEXBOX SCROLL FIX */
   overflow: auto;
   background: var(--bg-base);
   position: relative;
@@ -124,6 +108,7 @@
   border-bottom: 1px solid var(--border-subtle);
   user-select: none;
   white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .data-table td {

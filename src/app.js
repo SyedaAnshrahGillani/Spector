@@ -139,6 +139,7 @@ class SpectorApp {
       renderTableView(mainEl, this.state, {
         onSearch: (q) => this.handleSearch(q),
         onPageChange: (p) => this.setState({ currentPage: p }),
+        onPageSizeChange: (s) => this.setState({ pageSize: s, currentPage: 1 }),
         onSort: (col) => this.handleSort(col),
         onToggleSQL: () => this.setState({ sqlActive: !this.state.sqlActive }),
         onRowClick: (record, idx) => this.setState({ showDrawer: true, selectedRecord: record, selectedRecordIdx: idx }),

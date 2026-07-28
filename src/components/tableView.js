@@ -1,6 +1,6 @@
 /**
  * SPECTOR V2 STUDIO - Interactive Data Table Component
- * Features value auto-formatting (badges for booleans, pills for tags, mono numbers), column sorting, & pagination.
+ * Features value auto-formatting, sticky header scrolling, & flexible page size selection.
  */
 
 import { DataParser } from '../engine/dataParser.js';
@@ -10,13 +10,13 @@ export function renderTableView(containerEl, state, callbacks) {
   const columns = DataParser.extractColumns(records);
 
   const page = state.currentPage || 1;
-  const pageSize = state.pageSize || 25;
+  const pageSize = state.pageSize === 'all' ? (records.length || 1) : (parseInt(state.pageSize, 10) || 25);
   const totalPages = Math.ceil(records.length / pageSize) || 1;
   const startIndex = (page - 1) * pageSize;
   const pageRecords = records.slice(startIndex, startIndex + pageSize);
 
   containerEl.innerHTML = `
-    <div class="flex flex-col flex-1 overflow-hidden animate-fade-in">
+    <div class="flex flex-col flex-1 overflow-hidden animate-fade-in" style="min-height: 0;">
       <!-- Table Controls Bar -->
       <div class="control-bar flex items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -77,8 +77,19 @@ export function renderTableView(containerEl, state, callbacks) {
 
       <!-- Pagination Footer -->
       <div class="pagination-bar flex items-center justify-between">
-        <div class="text-xs text-muted font-mono">
-          Showing ${startIndex + 1} to ${Math.min(startIndex + pageSize, records.length)} of ${records.length} records
+        <div class="flex items-center gap-3 text-xs text-muted font-mono">
+          <span>Showing ${startIndex + 1} to ${Math.min(startIndex + pageSize, records.length)} of ${records.length} records</span>
+          
+          <div class="flex items-center gap-1">
+            <span>Rows per page:</span>
+            <select id="selectPageSize" class="input-text text-xs py-1 px-2" style="width: auto;">
+              <option value="25" ${state.pageSize == 25 ? 'selected' : ''}>25</option>
+              <option value="50" ${state.pageSize == 50 ? 'selected' : ''}>50</option>
+              <option value="100" ${state.pageSize == 100 ? 'selected' : ''}>100</option>
+              <option value="500" ${state.pageSize == 500 ? 'selected' : ''}>500</option>
+              <option value="all" ${state.pageSize === 'all' ? 'selected' : ''}>All</option>
+            </select>
+          </div>
         </div>
 
         <div class="flex items-center gap-2">
@@ -93,6 +104,10 @@ export function renderTableView(containerEl, state, callbacks) {
   // Attach Event Handlers
   containerEl.querySelector('#searchInput')?.addEventListener('input', (e) => {
     callbacks.onSearch(e.target.value);
+  });
+
+  containerEl.querySelector('#selectPageSize')?.addEventListener('change', (e) => {
+    callbacks.onPageSizeChange(e.target.value);
   });
 
   containerEl.querySelector('#btnSQLToggle')?.addEventListener('click', callbacks.onToggleSQL);
