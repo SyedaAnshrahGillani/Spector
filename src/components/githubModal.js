@@ -1,5 +1,5 @@
 /**
- * SPECTOR V2 - Direct GitHub Sync Modal Component
+ * SPECTOR V2 STUDIO - Direct GitHub Sync Modal Component
  */
 
 export function renderGitHubModal(containerEl, state, callbacks) {
@@ -21,14 +21,14 @@ export function renderGitHubModal(containerEl, state, callbacks) {
 
         <div class="p-6 flex flex-col gap-4">
           <p class="text-sm text-secondary">
-            Paste any GitHub file URL or repository path to stream & inspect the dataset directly without manually downloading:
+            Paste any GitHub file URL or raw link to stream & inspect the dataset directly without downloading:
           </p>
 
           <div class="flex flex-col gap-1">
             <label class="text-xs font-semibold text-muted uppercase">GitHub File URL or Raw Link</label>
             <input type="text" id="githubUrlInput" class="input-text w-full font-mono text-xs" 
-              placeholder="https://github.com/username/repo/blob/main/data/llm_eval.jsonl" 
-              value="${state.githubUrl || ''}" />
+              placeholder="https://github.com/SyedaAnshrahGillani/Spector/blob/main/data/vibe_queries.jsonl" 
+              value="${state.githubUrl || ''}" autofocus />
           </div>
 
           <div class="flex flex-col gap-1">
@@ -47,7 +47,7 @@ export function renderGitHubModal(containerEl, state, callbacks) {
           <div class="flex justify-end gap-2 mt-2">
             <button id="btnCancelGitHub" class="btn btn-ghost">Cancel</button>
             <button id="btnSubmitGitHub" class="btn btn-emerald flex items-center gap-1" ${state.githubLoading ? 'disabled' : ''}>
-              <span>${state.githubLoading ? 'Syncing...' : 'Sync Dataset'}</span>
+              <span>${state.githubLoading ? '⚡ Syncing Dataset...' : 'Sync Dataset'}</span>
             </button>
           </div>
         </div>
@@ -55,12 +55,20 @@ export function renderGitHubModal(containerEl, state, callbacks) {
     </div>
   `;
 
-  containerEl.querySelector('#btnCloseGitHub')?.addEventListener('click', callbacks.onCloseGitHub);
-  containerEl.querySelector('#btnCancelGitHub')?.addEventListener('click', callbacks.onCloseGitHub);
+  const inputEl = containerEl.querySelector('#githubUrlInput');
+  const submitBtn = containerEl.querySelector('#btnSubmitGitHub');
 
-  containerEl.querySelector('#btnSubmitGitHub')?.addEventListener('click', () => {
-    const url = containerEl.querySelector('#githubUrlInput').value;
+  const doSubmit = () => {
+    const url = inputEl.value;
     const pat = containerEl.querySelector('#githubPatInput').value;
     callbacks.onSyncGitHub(url, pat);
+  };
+
+  inputEl?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doSubmit();
   });
+
+  containerEl.querySelector('#btnCloseGitHub')?.addEventListener('click', callbacks.onCloseGitHub);
+  containerEl.querySelector('#btnCancelGitHub')?.addEventListener('click', callbacks.onCloseGitHub);
+  submitBtn?.addEventListener('click', doSubmit);
 }
