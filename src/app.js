@@ -65,6 +65,24 @@ class SpectorApp {
     this.render();
   }
 
+  resetHome() {
+    this.setState({
+      records: null,
+      filteredRecords: null,
+      fileName: '',
+      currentPage: 1,
+      searchQuery: '',
+      sortCol: null,
+      sqlActive: false,
+      sqlQuery: '',
+      showDrawer: false,
+      showDiffViewer: false,
+      showHealthCheck: false,
+      showGitHubModal: false,
+      showPiiModal: false,
+    });
+  }
+
   render() {
     const rootEl = document.getElementById('app');
     if (!rootEl) return;
@@ -87,6 +105,7 @@ class SpectorApp {
 
     // Render Header
     renderHeader(headerEl, this.state, {
+      onResetHome: () => this.resetHome(),
       onToggleTheme: () => {
         const newTheme = this.state.theme === 'dark' ? 'light' : 'dark';
         localStorage.setItem('spector_theme', newTheme);

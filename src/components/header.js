@@ -3,9 +3,11 @@
  */
 
 export function renderHeader(containerEl, state, callbacks) {
+  const hasData = state.records && state.records.length > 0;
+
   containerEl.innerHTML = `
     <header class="app-header flex items-center justify-between">
-      <div class="brand-logo-container">
+      <div id="brandLogo" class="brand-logo-container cursor-pointer hover:opacity-90 transition-opacity" title="Click to go back to Home / Reset dataset">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="32" height="32" rx="8" fill="url(#brand-grad)"/>
           <path d="M10 12C10 10.8954 10.8954 10 12 10H20C21.1046 10 22 10.8954 22 12V20C22 21.1046 21.1046 22 20 22H12C10.8954 22 10 21.1046 10 20V12Z" stroke="#FFFFFF" stroke-width="2"/>
@@ -22,19 +24,25 @@ export function renderHeader(containerEl, state, callbacks) {
       </div>
 
       <div class="flex items-center gap-3">
+        ${hasData ? `
+          <button id="btnBackHome" class="btn btn-ghost text-sm flex items-center gap-1 text-indigo font-semibold" title="Unload dataset and return to dropzone">
+            <span>🏠 Home</span>
+          </button>
+        ` : ''}
+
         <button id="btnGitHubSync" class="btn btn-ghost text-sm flex items-center gap-1" title="Sync dataset directly from GitHub repo">
           <span>🔗</span> GitHub Sync
         </button>
 
-        <button id="btnHealthCheck" class="btn btn-ghost text-sm flex items-center gap-1" title="View dataset health & summary stats" ${!state.records || state.records.length === 0 ? 'disabled' : ''}>
+        <button id="btnHealthCheck" class="btn btn-ghost text-sm flex items-center gap-1" title="View dataset health & summary stats" ${!hasData ? 'disabled' : ''}>
           <span>📊</span> Health Check
         </button>
 
-        <button id="btnDiffViewer" class="btn btn-ghost text-sm flex items-center gap-1" title="Side-by-side prompt/completion diff" ${!state.records || state.records.length === 0 ? 'disabled' : ''}>
+        <button id="btnDiffViewer" class="btn btn-ghost text-sm flex items-center gap-1" title="Side-by-side prompt/completion diff" ${!hasData ? 'disabled' : ''}>
           <span>⚡</span> Side-by-Side Diff
         </button>
 
-        <button id="btnPiiMasker" class="btn btn-ghost text-sm flex items-center gap-1" title="Redact sensitive user data" ${!state.records || state.records.length === 0 ? 'disabled' : ''}>
+        <button id="btnPiiMasker" class="btn btn-ghost text-sm flex items-center gap-1" title="Redact sensitive user data" ${!hasData ? 'disabled' : ''}>
           <span>🛡️</span> Redact PII
         </button>
 
@@ -50,6 +58,8 @@ export function renderHeader(containerEl, state, callbacks) {
   `;
 
   // Attach event listeners
+  containerEl.querySelector('#brandLogo')?.addEventListener('click', callbacks.onResetHome);
+  containerEl.querySelector('#btnBackHome')?.addEventListener('click', callbacks.onResetHome);
   containerEl.querySelector('#themeToggle')?.addEventListener('click', callbacks.onToggleTheme);
   containerEl.querySelector('#btnGitHubSync')?.addEventListener('click', callbacks.onOpenGitHubSync);
   containerEl.querySelector('#btnHealthCheck')?.addEventListener('click', callbacks.onOpenHealthCheck);
