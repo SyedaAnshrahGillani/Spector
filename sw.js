@@ -2,11 +2,13 @@
  * SPECTOR V2 - Service Worker for Offline PWA Support
  */
 
-const CACHE_NAME = 'spector-v2-cache-v1';
+const CACHE_NAME = 'spector-v2-cache-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './src/images/spector-logo.png',
+  './src/images/hero.png',
   './src/styles/main.css',
   './src/styles/components.css',
   './src/app.js',
@@ -27,8 +29,23 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
