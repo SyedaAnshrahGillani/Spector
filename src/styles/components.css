@@ -1,15 +1,17 @@
 /* ==========================================================================
    SPECTOR V2 STUDIO - COMPONENT STYLES
-   Responsive Table, Fix Layout Overflow & Mobile Horizontal Scrolling
+   Fixed Top Header & Control Bar, Auto-Scrolling Table, Sticky Bottom Pagination
    ========================================================================== */
 
-/* Main Header Bar */
+/* Main Header Bar - Fixed Top */
 .app-header {
   height: 60px;
+  flex-shrink: 0;
   background: var(--bg-header);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0 1.25rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 30;
 }
 
 .brand-logo-container {
@@ -33,15 +35,16 @@
   text-transform: uppercase;
 }
 
-/* App Control Bar (below header) */
+/* App Control Bar (below header) - Fixed Top */
 .control-bar {
+  flex-shrink: 0;
   padding: 0.75rem 1.25rem;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
-  flex-wrap: wrap;
+  z-index: 25;
 }
 
-/* Main Workspace Split */
+/* Main Workspace Container - Locked to Viewport */
 .workspace-container {
   flex: 1;
   min-height: 0;
@@ -51,7 +54,7 @@
   overflow: hidden;
 }
 
-/* Dropzone & Hero Empty State */
+/* Hero Dropzone */
 .hero-dropzone {
   border: 2px dashed var(--border-strong);
   border-radius: var(--radius-xl);
@@ -82,12 +85,13 @@
   filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
 }
 
-/* Data Table Container - Full Viewport Vertical & Horizontal Scroll */
+/* Data Table Container - Middle Scrollable Area */
 .table-container {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
-  width: 100%;
-  overflow: auto;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto !important;
+  overflow-x: auto !important;
   background: var(--bg-base);
   position: relative;
 }
@@ -115,7 +119,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .data-table td {
@@ -135,16 +139,20 @@
   background: var(--bg-surface-hover);
 }
 
-/* Pagination Bar */
+/* Pagination Bar - Sticky Bottom Footer */
 .pagination-bar {
-  padding: 0.65rem 1.25rem;
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0 1.25rem;
   background: var(--bg-header);
   border-top: 1px solid var(--border-subtle);
-  flex-wrap: wrap;
+  z-index: 20;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
 }
 
 /* SQL Console Box */
 .sql-panel {
+  flex-shrink: 0;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.85rem 1.25rem;
@@ -272,12 +280,4 @@
   flex: 1;
   overflow: auto;
   padding: 1.25rem;
-}
-
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 768px) {
-  .app-header { padding: 0 0.85rem; }
-  .control-bar { padding: 0.65rem 0.85rem; flex-direction: column; align-items: stretch; }
-  .pagination-bar { padding: 0.65rem 0.85rem; flex-direction: column; gap: 0.5rem; }
-  .diff-container { grid-template-columns: 1fr; }
 }
