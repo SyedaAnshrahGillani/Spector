@@ -1,0 +1,5 @@
+[
+  {"id": 101, "category": "General Knowledge", "question": "What is the capital of France?", "answer": "Paris", "difficulty": "easy"},
+  {"id": 102, "category": "Computer Science", "question": "Explain recursion.", "answer": "A function that solves a problem by calling a smaller instance of itself.", "difficulty": "medium"},
+  {"id": 103, "category": "AI & ML", "question": "What is the purpose of attention mechanisms in Transformers?", "answer": "Attention mechanisms allow models to dynamically weigh the importance of different tokens in a sequence regardless of distance.", "difficulty": "hard"}
+]

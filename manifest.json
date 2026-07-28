@@ -1,0 +1,16 @@
+{
+  "name": "Spector Studio - Privacy-First Dataset & LLM Studio",
+  "short_name": "Spector",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0d11",
+  "theme_color": "#0b0d11",
+  "description": "100% Client-side offline dataset viewer, SQL console, and LLM prompt/eval studio.",
+  "icons": [
+    {
+      "src": "src/images/spector-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+{"idx": 1, "query": "Design a cyber-minimalist obsidian studio UI for dataset inspection", "domain": "web_design", "complexity": "high"}
+{"idx": 2, "query": "Build a client-side PII masker for emails and secret API tokens", "domain": "security", "complexity": "medium"}
+{"idx": 3, "query": "Implement in-browser SQL querying over loaded CSV and JSON records", "domain": "data_engineering", "complexity": "high"}

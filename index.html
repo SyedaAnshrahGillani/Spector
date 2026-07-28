@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spector V2 Studio – Privacy-First Data & LLM Evaluation Studio</title>
+  <meta name="description" content="100% Private, offline-first dataset viewer, SQL console, and LLM evaluation studio by Syeda Anshrah Gillani."/>
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:title" content="Spector V2 Studio – Instant Private Data & LLM Studio"/>
+  <meta property="og:description" content="Inspect, query with SQL, compare prompt diffs, and sanitize private datasets 100% in-browser."/>
+  <meta property="og:type" content="website"/>
+  
+  <!-- PWA Manifest & Favicon -->
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="src/images/spector-logo.png" type="image/png"/>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Spector Styles -->
+  <link rel="stylesheet" href="src/styles/main.css"/>
+  <link rel="stylesheet" href="src/styles/components.css"/>
+</head>
+<body>
+
+  <!-- Spector App Root Container -->
+  <div id="app" class="flex flex-col h-screen"></div>
+
+  <!-- Main Application Script (ES Module) -->
+  <script type="module" src="src/app.js"></script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration error:', err));
+      });
+    }
+  </script>
+</body>
+</html>
