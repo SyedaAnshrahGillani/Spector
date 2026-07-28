@@ -1,5 +1,5 @@
 /**
- * SPECTOR V2 - Header Component
+ * SPECTOR V2 - Header Component with Generated Branding Logo
  */
 
 export function renderHeader(containerEl, state, callbacks) {
@@ -8,17 +8,7 @@ export function renderHeader(containerEl, state, callbacks) {
   containerEl.innerHTML = `
     <header class="app-header flex items-center justify-between">
       <div id="brandLogo" class="brand-logo-container cursor-pointer hover:opacity-90 transition-opacity" title="Click to go back to Home / Reset dataset">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="url(#brand-grad)"/>
-          <path d="M10 12C10 10.8954 10.8954 10 12 10H20C21.1046 10 22 10.8954 22 12V20C22 21.1046 21.1046 22 20 22H12C10.8954 22 10 21.1046 10 20V12Z" stroke="#FFFFFF" stroke-width="2"/>
-          <circle cx="16" cy="16" r="3" fill="#6366F1"/>
-          <defs>
-            <linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#4F46E5"/>
-              <stop offset="1" stop-color="#10B981"/>
-            </linearGradient>
-          </defs>
-        </svg>
+        <img src="src/images/spector-logo.png" alt="Spector Studio Logo" style="width:36px; height:36px; border-radius:8px; box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);" />
         <span>Spector</span>
         <span class="brand-badge">V2 STUDIO</span>
       </div>
